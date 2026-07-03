@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 import axios from "axios";
+import { exec } from "child_process";
 import { OpenAI } from "openai";
 import { PassThrough } from "stream";
 
@@ -23,6 +24,15 @@ async function getWeatherData(cityName) {
   });
 }
 
+async function executeCommandOnCli(command) {
+  return new Promise((resolve, reject) => {
+    exec(command, (err, output) => {
+      if (err) resolve(`There was an error: ${err}`);
+      else resolve(output);
+    });
+  });
+}
+
 const SYSTEM_PROMPT = `
 You are an expert AI Engineer. You have to analyze the user's query carefully and then breakdown the problem into multiple sub problems before coming to final answer. Always breakdown user's intention and how to solve that problem and then do step by step.
 
@@ -40,6 +50,7 @@ The Pipeline:
 
 Available Tools:
 - "getWeatherData": getWeatherData(cityName: string): returns the realtime weather data of a city
+- "executeCommandOnCli": executeCommandOnCli(command: string): Executes the command on user's device and returns output from stdout
 
 Rules:
 - Always output one step at a time and wait for other step before proceeding
@@ -123,6 +134,21 @@ async function main(prompt = "") {
             continue;
           }
           break;
+        case "executeCommandOnCli": {
+          const toolResult = await executeCommandOnCli(input);
+          console.log(
+            `🤖 (${parsedOutput.step}): 🛠️${functionName}:${input}`,
+            toolResult,
+          );
+          MESSAGES_DB.push({
+            role: "developer",
+            content: JSON.stringify({
+              step: "TOOL_OUTPUT",
+              output: toolResult,
+            }),
+          });
+          continue;
+        }
       }
     }
 
@@ -132,4 +158,7 @@ async function main(prompt = "") {
 }
 
 // main("What is 6-1+2*3/2 ?");
-main("What is the weather in Daspur, Ghatal, Haldia and Kolkata?");
+// main("What is the weather in Daspur, Ghatal, Haldia and Kolkata?");
+main(
+  "Fetch the weather in Daspur, Ghatal, Haldia and Kolkata then create a new folder call Weather, and there create a beautiful html and css file and show the weather of these cities in a butifully looking webpage, and then run this on my browser. This is a windows machine so use windows specific commands",
+);
