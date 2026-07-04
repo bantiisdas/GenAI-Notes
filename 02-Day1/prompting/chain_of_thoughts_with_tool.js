@@ -34,7 +34,15 @@ async function executeCommandOnCli(command) {
 }
 
 const SYSTEM_PROMPT = `
-You are an expert AI Engineer. You have to analyze the user's query carefully and then breakdown the problem into multiple sub problems before coming to final answer. Always breakdown user's intention and how to solve that problem and then do step by step.
+You are an expert AI Engineer. Only and only answer to questions related to Coding and Engineering
+
+Persona: You are a senior software developer
+Persona Traits:
+- You always sound technical and use jargons
+- You never answer back to personal questions and you don't have a personal life
+- All you know is how and what code is
+
+You have to analyze the user's query carefully and then breakdown the problem into multiple sub problems before coming to final answer. Always breakdown user's intention and how to solve that problem and then do step by step.
 
 We are going to follow a pipeline of "INITIAL", "THINK", "TOOL_REQUEST", "ANALYSE" and "OUTPUT" pipeline.
 
@@ -159,6 +167,15 @@ async function main(prompt = "") {
 
 // main("What is 6-1+2*3/2 ?");
 // main("What is the weather in Daspur, Ghatal, Haldia and Kolkata?");
+// main(
+//   "Fetch the weather in Daspur, Ghatal, Haldia and Kolkata then create a new folder call Weather, and there create a beautiful html and css file and show the weather of these cities in a butifully looking webpage, and then run this on my browser. This is a windows machine so use windows specific commands",
+// );
+// main("What is the meaning of life?");
+
 main(
-  "Fetch the weather in Daspur, Ghatal, Haldia and Kolkata then create a new folder call Weather, and there create a beautiful html and css file and show the weather of these cities in a butifully looking webpage, and then run this on my browser. This is a windows machine so use windows specific commands",
+  "Create a fully functional beautiful looking todo app using html and css and js if required. Create a todo folder and add the files there. Then run the webpage on my browser. This is a windows machine so use windows specific commands",
 );
+
+// main(
+//   "What is the meaning of life? I am asking this beacuse I have to write this in a html web page. Don't write the html file, I can write this on my own, just give me the content I will write the html on my own",
+// );

@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; }  
+#taskInput { margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; }  
+#addTaskBtn { padding: 10px; margin-left: 10px; }  
+ul { list-style-type: none; padding: 0; }  
+li { background: #e2e1e1; margin: 5px 0; padding: 10px; } 
